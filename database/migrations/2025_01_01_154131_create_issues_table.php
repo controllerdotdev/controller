@@ -14,10 +14,14 @@ return new class extends Migration
         Schema::create('issues', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->foreignUuid('workspace_id')->constrained()->onDelete('cascade');
+            $table->foreignUuid('project_id')->constrained()->onDelete('cascade');
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('status');
             $table->string('priority');
+            $table->string('platform');
+            $table->boolean('has_seen')->default(false);
+            $table->dateTime('last_issue_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('api_tokens', function (Blueprint $table) {
+        Schema::create('projects', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->foreignUuid('workspace_id')->constrained();
+            $table->foreignUuid('workspace_id')->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->uuid('token', 100)->unique();
-            $table->dateTime('last_used_at')->nullable();
+            $table->string('platform');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('api_tokens');
+        Schema::dropIfExists('projects');
     }
 };

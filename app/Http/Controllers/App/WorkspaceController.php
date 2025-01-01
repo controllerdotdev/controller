@@ -36,7 +36,8 @@ class WorkspaceController extends Controller
             $user = auth()->user();
 
             $workspace = Workspace::create([
-                'name' => $request->name
+                'name' => $request->name,
+                'token' => Str::uuid(),
             ]);
 
             // attach user to project

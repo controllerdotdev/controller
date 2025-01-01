@@ -35,6 +35,7 @@ class Workspace extends Model implements HasMedia
      */
     protected $fillable = [
         'name',
+        'token',
         'logo',
     ];
 
@@ -82,5 +83,10 @@ class Workspace extends Model implements HasMedia
     public function issues(): HasMany
     {
         return $this->hasMany(Issue::class);
+    }
+
+    public function projects(): HasMany
+    {
+        return $this->hasMany(Project::class);
     }
 }

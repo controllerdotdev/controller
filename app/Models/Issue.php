@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Enums\Issue\Status;
 use App\Enums\Issue\Priority;
+use App\Enums\Issue\Platform;
 
 class Issue extends Model
 {
@@ -16,10 +17,14 @@ class Issue extends Model
 
     protected $fillable = [
         'workspace_id',
+        'project_id',
         'title',
         'description',
         'status',
         'priority',
+        'platform',
+        'has_seen',
+        'last_issue_at',
     ];
 
     /**
@@ -32,11 +37,19 @@ class Issue extends Model
         return [
             'status' => Status::class,
             'priority' => Priority::class,
+            'platform' => Platform::class,
+            'has_seen' => 'boolean',
+            'last_issue_at' => 'datetime',
         ];
     }
 
     public function workspace(): BelongsTo
     {
         return $this->belongsTo(Workspace::class);
+    }
+
+    public function project(): BelongsTo
+    {
+        return $this->belongsTo(Project::class);
     }
 }

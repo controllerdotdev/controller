@@ -17,6 +17,7 @@ return new class() extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->string('logo')->nullable();
+            $table->uuid('token')->unique();
             $table->timestamps();
             $table->softDeletes();
         });

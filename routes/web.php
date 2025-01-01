@@ -11,7 +11,6 @@ use App\Http\Controllers\App\IssueController;
 // setting
 use App\Http\Controllers\App\Setting\AccountController;
 use App\Http\Controllers\App\Setting\WorkspaceController as SettingWorkspaceController;
-use App\Http\Controllers\App\Setting\ApiTokenController;
 
 Route::group(
     [
@@ -53,11 +52,6 @@ Route::group(
             Route::get('/workspace', [SettingWorkspaceController::class, 'edit'])->name('setting.workspace.edit');
             Route::put('/workspace', [SettingWorkspaceController::class, 'update'])->name('setting.workspace.update');
             Route::delete('/workspace/photo', [SettingWorkspaceController::class, 'deleteLogo'])->name('setting.workspace.logo.destroy');
-
-            // api tokens
-            Route::get('/api-tokens', [ApiTokenController::class, 'index'])->name('setting.api-tokens.index');
-            Route::post('/api-tokens', [ApiTokenController::class, 'store'])->name('setting.api-tokens.store');
-            Route::delete('/api-tokens/{id}', [ApiTokenController::class, 'destroy'])->name('setting.api-tokens.destroy');
         });
     }
 );

@@ -9,9 +9,9 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use \App\Models\Workspace;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ApiToken>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Project>
  */
-class ApiTokenFactory extends Factory
+class ProjectFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -23,8 +23,7 @@ class ApiTokenFactory extends Factory
         return [
             'workspace_id' => Workspace::factory(),
             'name' => $this->faker->name,
-            'token' => $this->faker->uuid,
-            'last_used_at' => now(),
+            'platform' => $this->faker->randomElement(['ios', 'android', 'web']),
         ];
     }
 }
