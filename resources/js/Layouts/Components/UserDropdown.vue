@@ -170,7 +170,7 @@ onMounted(() => {
                                                 <div
                                                     class="text-xs font-medium text-zinc-400 capitalize"
                                                 >
-                                                    {{ project.plan.name }} ·
+                                                    Free ·
                                                     {{
                                                         `${
                                                             project.users_count

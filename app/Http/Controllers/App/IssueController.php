@@ -18,7 +18,7 @@ use Inertia\Response;
 
 class IssueController extends Controller
 {
-    public function index(Request $request, $id = null): Response
+    public function index(Request $request): Response
     {
         $workspace = $request->user()->currentWorkspace;
 
@@ -61,12 +61,12 @@ class IssueController extends Controller
     {
         $workspace = $request->user()->currentWorkspace;
 
-        $link = Link::where('workspace_id', $workspace->id)->where('id', $id)->firstOrFail();
-        $link->delete();
+        $issue = Issue::where('workspace_id', $workspace->id)->where('id', $id)->firstOrFail();
+        $issue->delete();
 
-        session()->flash('flash.banner', 'Link deleted successfully.');
+        session()->flash('flash.banner', 'Issue deleted successfully.');
         session()->flash('flash.bannerStyle', 'success');
 
-        return redirect(route('links.index'));
+        return redirect(route('issues.index'));
     }
 }
