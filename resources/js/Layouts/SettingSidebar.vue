@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from "vue";
+import { Link, usePage } from "@inertiajs/vue3";
 import {
     Dialog,
     DialogPanel,
@@ -7,10 +8,9 @@ import {
     TransitionRoot,
 } from "@headlessui/vue";
 
-import { IconX, IconMenu2 } from "@tabler/icons-vue";
+import { IconX, IconMenu2, IconChevronLeft } from "@tabler/icons-vue";
 
-import UserDropdown from "./Components/UserDropdown.vue";
-import Menu from "./Components/Menu.vue";
+import MenuSetting from "./Components/MenuSetting.vue";
 
 const sidebarOpen = ref(false);
 
@@ -82,22 +82,18 @@ defineExpose({
                         </TransitionChild>
                         <!-- Sidebar component, swap this element with another sidebar if you like -->
                         <div
-                            class="flex grow flex-col gap-y-5 overflow-y-auto bg-zinc-100 dark:bg-zinc-800 px-6 pt-6 pb-4 ring-1 ring-white/10"
+                            class="flex grow flex-col gap-y-5 overflow-y-auto bg-zinc-100 dark:bg-zinc-800 px-6 py-4 pb-2 ring-1 ring-white/10"
                         >
-                            <div class="mb-2 flex items-center gap-x-2">
-                                <img
-                                    src="/images/changelogfy/logo-color.png"
-                                    class="h-7"
-                                    alt="Changelogfy"
-                                />
-                                <div
-                                    class="text-base font-semibold text-black dark:text-white"
+                            <div class="flex items-center space-x-3">
+                                <Link
+                                    class="rounded border border-zinc-300 dark:border-zinc-800 hover:bg-zinc-50 text-black dark:text-white p-1.5 -ml-2"
+                                    :href="route('issues.index')"
                                 >
-                                    Changelogfy
-                                </div>
+                                    <IconChevronLeft class="w-4 h-4" />
+                                </Link>
+                                <h3 class="page-title">Settings</h3>
                             </div>
-                            <Menu />
-                            <UserDropdown class="-mx-2" />
+                            <MenuSetting />
                         </div>
                     </DialogPanel>
                 </TransitionChild>
@@ -110,20 +106,19 @@ defineExpose({
         class="hidden lg:fixed lg:inset-y-0 lg:z-40 lg:flex lg:w-64 lg:flex-col h-full"
     >
         <div
-            class="flex-1 flex flex-col overflow-y-auto bg-zinc-100 dark:bg-zinc-800 px-6 py-4"
+            class="flex-1 flex flex-col overflow-y-auto bg-zinc-100 dark:bg-zinc-900 px-6 py-4"
         >
-            <div class="mb-8 flex items-center gap-x-2">
-                <img
-                    src="/images/changelogfy/logo-color.png"
-                    class="h-7"
-                    alt="Changelogfy"
-                />
-                <div class="text-base font-semibold text-black dark:text-white">
-                    Changelogfy
-                </div>
+            <div class="flex items-center space-x-3 mb-4">
+                <Link
+                    class="rounded hover:bg-zinc-200 dark:hover:bg-zinc-800 px-2 py-1 -ml-2 flex items-center gap-x-2 text-zinc-800 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-white"
+                    :href="route('issues.index')"
+                >
+                    <IconChevronLeft class="w-4 h-4" />
+                    <div class="text-sm font-medium">Back to App</div>
+                </Link>
             </div>
-            <Menu />
-            <UserDropdown class="mt-2 -mx-2" />
+
+            <MenuSetting />
         </div>
     </div>
 
@@ -138,5 +133,8 @@ defineExpose({
             <span class="sr-only">Open sidebar</span>
             <IconMenu2 class="h-6 w-6" aria-hidden="true" />
         </button>
+        <div class="flex-1 text-sm font-semibold leading-6 text-white">
+            Dashboard
+        </div>
     </div>
 </template>

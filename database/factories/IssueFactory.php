@@ -11,7 +11,7 @@ use App\Models\Project;
 
 use App\Enums\Issue\Status;
 use App\Enums\Issue\Priority;
-use App\Enums\Issue\Platform;
+use App\Enums\Platform;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Issue>

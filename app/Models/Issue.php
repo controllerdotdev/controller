@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 use App\Enums\Issue\Status;
 use App\Enums\Issue\Priority;
-use App\Enums\Issue\Platform;
+use App\Enums\Platform;
 
 class Issue extends Model
 {
@@ -19,12 +19,25 @@ class Issue extends Model
         'workspace_id',
         'project_id',
         'title',
-        'description',
+        'message',
         'status',
         'priority',
         'platform',
+        'environment',
+        'release',
+        'transaction',
+        'exception_class',
+        'exception_file',
+        'exception_line',
+        'stack_trace',
+        'context',
+        'request_data',
+        'tags',
+        'events_count',
         'has_seen',
-        'last_issue_at',
+        'first_seen_at',
+        'last_seen_at',
+        'fingerprint',
     ];
 
     /**
@@ -38,9 +51,19 @@ class Issue extends Model
             'status' => Status::class,
             'priority' => Priority::class,
             'platform' => Platform::class,
+            'stack_trace' => 'array',
+            'context' => 'array',
+            'request_data' => 'array',
+            'tags' => 'array',
             'has_seen' => 'boolean',
-            'last_issue_at' => 'datetime',
+            'first_seen_at' => 'datetime',
+            'last_seen_at' => 'datetime',
         ];
+    }
+
+    public function issue_events()
+    {
+        return $this->hasMany(IssueEvent::class);
     }
 
     public function workspace(): BelongsTo

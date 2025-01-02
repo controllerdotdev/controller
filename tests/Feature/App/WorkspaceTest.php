@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 use App\Models\User;
 
+use App\Enums\Platform;
+
 use function Pest\Laravel\actingAs;
 
 test('create workspace page can be displayed', function () {
@@ -21,9 +23,10 @@ test('can create workspace', function () {
         ->from(route('workspaces.create'))
         ->post(route('workspaces.store'), [
             'name' => 'Lua.sh',
+            'platform' => Platform::IOS->value,
         ])
         ->assertSessionHasNoErrors()
-        ->assertRedirect(route('issues.index'));
+        ->assertRedirect(route('projects.create'));
 });
 
 test('cannot create workspace without name', function () {

@@ -13,15 +13,15 @@ use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 use Inertia\Response;
 
-use App\Enums\User\Role;
-
-use App\Models\Workspace;
-
-class WorkspaceController extends Controller
+use App\Models\Project;
+use App\Enums\Platform;
+class ProjectController extends Controller
 {
     public function create(): Response
     {
-        return Inertia::render('Workspace/Create');
+        return Inertia::render('Project/Create', [
+            'platforms' => Platform::all(),
+        ]);
     }
 
     public function store(Request $request)
@@ -30,36 +30,29 @@ class WorkspaceController extends Controller
             'name' => ['required', 'string', 'max:255'],
         ]);
 
-        DB::beginTransaction();
+        // DB::beginTransaction();
 
-        try {
+        // try {
             $user = auth()->user();
+            $workspace = $user->currentWorkspace;
 
-            $workspace = Workspace::create([
+            Project::create([
+                'workspace_id' => $workspace->id,
                 'name' => $request->name,
-                'token' => Str::uuid(),
+                'platform' => $request->platform,
             ]);
-
-            // attach user to project
-            $user->workspaces()->attach($workspace->id, [
-                'role' => Role::ROLE_OWNER,
-            ]);
-
-            $user->forceFill([
-                'current_workspace_id' => $workspace->id,
-            ])->save();
 
             DB::commit();
 
-            return redirect(route('projects.create'));
-        } catch (\Exception $e) {
-            Log::error($e);
-            DB::rollBack();
+            return redirect(route('issues.index'));
+        // } catch (\Exception $e) {
+        //     Log::error($e);
+        //     DB::rollBack();
 
-            session()->flash('flash.banner', 'Error creating workspace');
-            session()->flash('flash.bannerStyle', 'danger');
-            return back();
-        }
+        //     session()->flash('flash.banner', 'Error creating workspace');
+        //     session()->flash('flash.bannerStyle', 'danger');
+        //     return back();
+        // }
     }
 
     public function setCurrentWorkspace(Request $request)

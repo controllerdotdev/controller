@@ -6,7 +6,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use App\Models\User;
 use App\Models\Project;
-use App\Enums\Issue\Platform;
+use App\Enums\Platform;
 
 uses(RefreshDatabase::class);
 
@@ -22,7 +22,7 @@ it('can create a new issue', function () {
     $response = $this
         ->withToken($this->user->currentWorkspace->token)
         ->withHeader('project-id', $this->project->id)
-        ->post(route('private-api.issues.store'), [
+        ->post(route('api.issues.store'), [
             'title' => 'New Issue',
             'description' => 'New Issue Description',
             'platform' => Platform::IOS->value,

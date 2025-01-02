@@ -12,53 +12,24 @@ import {
 
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 
-import Notification from "./Notification.vue";
-
 const user = usePage().props.auth.user;
-const currentProject = usePage().props.auth.user.current_project;
-const projects = usePage().props.auth.user.projects;
+const currentWorkspace = usePage().props.auth.user.current_workspace;
+const workspaces = usePage().props.auth.user.workspaces;
 
-const notification = ref(null);
-const unreadNotifications = ref(0);
-
-const getTotalUnreadNotifications = () => {
-    axios
-        .get(route("notifications.total-unread"))
-        .then((response) => {
-            unreadNotifications.value = response.data;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
-
-const openNotifications = () => {
-    notification.value.open();
-};
-
-const switchToProject = (project) => {
+const switchToWorkspace = (workspace) => {
     router.put(
-        route("projects.update-current"),
+        route("workspaces.update-current"),
         {
-            project_id: project.id,
+            workspace_id: workspace.id,
         },
         {
             preserveState: false,
         }
     );
 };
-
-onMounted(() => {
-    getTotalUnreadNotifications();
-});
 </script>
 <template>
     <div>
-        <Notification
-            ref="notification"
-            :unreadNotifications="unreadNotifications"
-            @update:totalUnreadNotifications="getTotalUnreadNotifications"
-        />
         <div class="flex items-center justify-between">
             <Menu as="div" class="relative flex-1">
                 <div>
@@ -70,17 +41,17 @@ onMounted(() => {
                                 class="w-6 h-6 rounded bg-zinc-200 dark:bg-zinc-700 inline-flex items-center justify-center"
                             >
                                 <span
-                                    v-if="currentProject.name"
+                                    v-if="currentWorkspace.name"
                                     class="text-xs font-medium leading-none text-zinc-800 dark:text-white"
                                 >
-                                    {{ currentProject.name.charAt(0) }}
+                                    {{ currentWorkspace.name.charAt(0) }}
                                 </span>
                             </div>
 
                             <div
                                 class="text-left truncate font-medium max-w-[100px]"
                             >
-                                {{ currentProject.name }}
+                                {{ currentWorkspace.name }}
                             </div>
                         </div>
                         <IconChevronUp
@@ -129,7 +100,7 @@ onMounted(() => {
                                 v-slot="{ active }"
                             >
                                 <div
-                                    @click="switchToProject(project)"
+                                    @click="switchToWorkspace(project)"
                                     :class="[
                                         active
                                             ? 'bg-zinc-100 dark:bg-zinc-900 text-zinc-900 dark:text-zinc-300'
@@ -236,30 +207,6 @@ onMounted(() => {
                     </MenuItems>
                 </transition>
             </Menu>
-
-            <div @click="openNotifications" class="ml-1 -mr-4">
-                <div
-                    class="cursor-pointer text-zinc-600 dark:text-zinc-500 hover:text-black dark:hover:text-white group flex gap-x-3 rounded py-2 px-3 text-sm font-medium"
-                >
-                    <div class="relative">
-                        <div
-                            v-if="unreadNotifications >= 1"
-                            class="flex absolute h-2.5 w-2.5 top-0 left-3"
-                        >
-                            <span
-                                class="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"
-                            ></span>
-                            <span
-                                class="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"
-                            ></span>
-                        </div>
-                        <IconBell
-                            class="h-5 w-5 shrink-0 stroke-2"
-                            aria-hidden="true"
-                        />
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </template>

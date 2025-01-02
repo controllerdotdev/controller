@@ -13,7 +13,7 @@ use Inertia\Inertia;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__ . '/../routes/web.php',
-        api: __DIR__ . '/../routes/api/index.php',
+        api: __DIR__ . '/../routes/api.php',
         apiPrefix: '/api',
         commands: __DIR__ . '/../routes/console.php',
         channels: __DIR__ . '/../routes/channels.php',
@@ -36,8 +36,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'set-workspace' => \App\Http\Middleware\App\SetWorkspace::class,
-            'private-api.auth' => \App\Http\Middleware\PrivateApi\Auth::class,
-            'public-api.auth' => \App\Http\Middleware\PublicApi\Auth::class,
+            'api.auth' => \App\Http\Middleware\Api\Auth::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

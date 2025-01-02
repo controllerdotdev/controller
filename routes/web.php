@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\App\WorkspaceController;
+use App\Http\Controllers\App\ProjectController;
 use App\Http\Controllers\App\MediaController;
 use App\Http\Controllers\App\IssueController;
 
@@ -27,9 +28,14 @@ Route::group(
         Route::post('/workspaces', [WorkspaceController::class, 'store'])->name('workspaces.store');
         Route::put('/workspaces/update-current', [WorkspaceController::class, 'setCurrentWorkspace'])->name('workspaces.update-current');
 
+        // projects
+        Route::get('/projects/create', [ProjectController::class, 'create'])->name('projects.create');
+        Route::post('/projects', [ProjectController::class, 'store'])->name('projects.store');
+
         // issues
-        Route::get('/issues/{id?}', [IssueController::class, 'index'])->name('issues.index');
+        Route::get('/issues', [IssueController::class, 'index'])->name('issues.index');
         Route::post('/issues', [IssueController::class, 'store'])->name('issues.store');
+        Route::get('/issues/{id}', [IssueController::class, 'show'])->name('issues.show');
         Route::put('/issues/{id}', [IssueController::class, 'update'])->name('issues.update');
         Route::delete('/issues/{id}', [IssueController::class, 'destroy'])->name('issues.destroy');
 

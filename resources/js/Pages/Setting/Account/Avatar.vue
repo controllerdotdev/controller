@@ -2,7 +2,7 @@
 import { ref, computed } from "vue";
 import { router, usePage } from "@inertiajs/vue3";
 import Button from "@/Components/Button.vue";
-import { PhTrash } from "@phosphor-icons/vue";
+import { IconTrash } from "@tabler/icons-vue";
 import axios from "axios";
 
 const input = ref(null);
@@ -93,7 +93,7 @@ const destroy = () => {
             @click="destroy"
             class="p-2 hover:bg-zinc-100 rounded-md cursor-pointer"
         >
-            <PhTrash class="text-zinc-500" size="20" />
+            <IconTrash class="text-zinc-500" size="20" />
         </div>
     </div>
     <div v-show="uploadHasErrors" class="my-2">

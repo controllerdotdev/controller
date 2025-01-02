@@ -24,182 +24,16 @@ import {
     IconAccessPoint,
 } from "@tabler/icons-vue";
 
-import BillingBanner from "@/Components/BillingBanner.vue";
-import { IconMessageChatbot } from "@tabler/icons-vue";
-import { IconFileCertificate } from "@tabler/icons-vue";
-import { IconSend } from "@tabler/icons-vue";
-
-const totalPendingInbox = ref(0);
-const project = computed(() => usePage().props.auth.user.current_project);
-
-const getTotalPendingInbox = () => {
-    axios
-        .get(route("feedbacks.total-pending-inbox"))
-        .then((response) => {
-            totalPendingInbox.value = response.data;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-};
-
-onMounted(() => {
-    getTotalPendingInbox();
-});
-
 const navigation = [
     {
+        group: "Issues",
         items: [
             {
-                name: "Setup Guide",
-                href: route("setup-guide.index"),
-                current: route().current("setup-guide.*"),
-                target: "_self",
-                icon: IconProgressBolt,
-                progress: `${project.value.setup_guide.tasks_done}/${project.value.setup_guide.tasks_total}`,
-                show: !project.value.setup_guide.is_done,
-            },
-            {
-                name: "Live Board",
-                href: project.value.primary_domain,
-                target: "_blank",
-                current: false,
-                icon: IconWorldShare,
-                show: true,
-            },
-        ],
-    },
-    {
-        group: "Posts",
-        items: [
-            {
-                name: "Inbox",
-                href: route("feedbacks.index", {
-                    inbox: "true",
-                }),
-                current: route().current("feedbacks.*", { inbox: "true" }),
-                target: "_self",
+                name: "All Issues",
+                href: route("issues.index"),
+                current: route().current("issues.*"),
                 icon: IconInbox,
-                count: totalPendingInbox.value,
                 show: true,
-            },
-            {
-                name: "All Posts",
-                href: route("feedbacks.index"),
-                current: route().current("feedbacks.*", {
-                    inbox: null,
-                    assigned: null,
-                }),
-                target: "_self",
-                icon: IconSquareAsterisk,
-                show: true,
-            },
-            {
-                name: "Assigned to me",
-                href: route("feedbacks.index", {
-                    assigned: "true",
-                }),
-                current: route().current("feedbacks.*", {
-                    assigned: "true",
-                }),
-                target: "_self",
-                icon: IconAt,
-                show: true,
-            },
-        ],
-    },
-    {
-        group: "Modules",
-        items: [
-            {
-                name: "Help Desk",
-                href: route("helpdesk.articles.index"),
-                current: route().current("helpdesk.*"),
-                icon: IconBook,
-                show: project.value.features.helpdesk,
-
-                items: [
-                    {
-                        name: "All Articles",
-                        href: route("helpdesk.articles.index"),
-                        current: route().current("helpdesk.articles.*"),
-                        target: "_self",
-                        icon: IconMapNorth,
-                    },
-                    {
-                        name: "Collections",
-                        href: route("helpdesk.collections.index"),
-                        current: route().current("helpdesk.collections.*"),
-                        target: "_self",
-                        icon: IconUsersGroup,
-                    },
-                ],
-            },
-            {
-                name: "Roadmap",
-                href: route("roadmap.index"),
-                current: route().current("roadmap.*"),
-                target: "_self",
-                icon: IconTelescope,
-                show: true,
-            },
-            {
-                name: "Changelog",
-                href: route("changelogs.index"),
-                current: route().current("changelogs.*"),
-                target: "_self",
-                icon: IconConfetti,
-                show: true,
-            },
-            {
-                name: "NPS",
-                href: route("nps.index"),
-                current: route().current("nps.*"),
-                target: "_self",
-                icon: IconMapNorth,
-                show: true,
-
-                // items: [
-                //     {
-                //         name: "Surveys",
-                //         href: route("nps.index"),
-                //         current:
-                //             route().current("nps.*") &&
-                //             !route().current("nps.billing.*"),
-                //         target: "_self",
-                //         icon: IconMapNorth,
-                //     },
-                //     {
-                //         name: "Billing",
-                //         href: route("nps.billing.index"),
-                //         current: route().current("nps.billing.*"),
-                //         target: "_self",
-                //         icon: IconSettings,
-                //     },
-                // ],
-            },
-        ],
-    },
-
-    {
-        group: "Insights",
-        items: [
-            {
-                name: "Users",
-                href: route("users.index"),
-                current: route().current("users.*"),
-                target: "_self",
-                icon: IconUsersGroup,
-                show: true,
-            },
-            {
-                name: "Analytics",
-                href: route("analytics.home", "visitor"),
-                current: route().current("analytics.home"),
-                target: "_self",
-                icon: IconTrendingUp,
-                show: true,
-                new: true,
             },
         ],
     },
@@ -209,7 +43,7 @@ const navigation = [
         items: [
             {
                 name: "Settings",
-                href: route("setting.project.edit"),
+                href: route("setting.workspace.edit"),
                 current: route().current("setting.*"),
                 target: "_self",
                 icon: IconSettings,
@@ -245,7 +79,7 @@ const openLink = (item) => {
                                 <li
                                     @click="openLink(item)"
                                     :class="{
-                                        'bg-zinc-200 dark:bg-zinc-800 text-black dark:text-white':
+                                        'bg-zinc-200 dark:bg-zinc-900 text-black dark:text-white':
                                             item.current,
                                         'text-zinc-900 hover:bg-zinc-200 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-white':
                                             !item.current,
@@ -365,7 +199,6 @@ const openLink = (item) => {
                 <ul role="list" class="-mx-2 space-y-4">
                     <li>
                         <div class="space-y-0.5">
-                            <BillingBanner />
                             <!-- <li>
                                 <div
                                     class="changelogfy-widget cursor-pointer text-zinc-600 dark:text-zinc-500 hover:text-black dark:hover:text-white hover:bg-zinc-200 dark:hover:bg-[#1d212e] group flex items-center gap-x-3 rounded py-2 px-3 text-sm font-medium"

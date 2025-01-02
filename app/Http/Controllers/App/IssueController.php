@@ -40,7 +40,7 @@ class IssueController extends Controller
 
         $tabler = $query->paginate(config('app.pagination.default'));
 
-        return Inertia::render('Issue/Index', [
+        return Inertia::render('Issue/Index/Index', [
             'table' => $tabler,
             'hasData' => Issue::where('workspace_id', $workspace->id)->exists(),
         ]);
@@ -50,9 +50,12 @@ class IssueController extends Controller
     {
         $workspace = $request->user()->currentWorkspace;
 
-        $issue = Issue::where('workspace_id', $workspace->id)->where('id', $id)->firstOrFail();
+        $issue = Issue::where('workspace_id', $workspace->id)
+            ->where('id', $id)
+            ->with('issue_events')
+            ->firstOrFail();
 
-        return Inertia::render('Issue/Show', [
+        return Inertia::render('Issue/Show/Index', [
             'issue' => $issue,
         ]);
     }
